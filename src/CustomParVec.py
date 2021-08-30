@@ -45,7 +45,7 @@ class CustomParVec():
         self.dimensions = dimensions # Set the number of dimension
         if not pre_trained:
             self.word2vec_model = Word2Vec(word_sentence_list, workers=workers, \
-                                           size=self.dimensions, min_count = min_word_count, \
+                                           vector_size=self.dimensions, min_count = min_word_count, \
                                            window = context, sample = downsampling)
             self.word2vec_model.init_sims(replace=True) # used for memory efficiency
         else:

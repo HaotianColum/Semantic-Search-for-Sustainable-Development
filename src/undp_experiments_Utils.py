@@ -25,12 +25,13 @@ import os
 
 
 
+'''
+    Loading the ground truth
+    First we need a function to load our previous RIA data. This represents the ground truth as to what sentences match 
+    certain targets. If we are testing with a country which we have a completed RIA for, we exclude that RIA.
+    We also have functionality to only load the target descriptions.   
+'''
 
-
-#Loading the ground truth
-#First we need a function to load our previous RIA data. This represents the ground truth as to what sentences match certain targets. 
-#If we are testing with a country which we have a completed RIA for, we exclude that RIA. We also have functionality to only 
-#load the target descriptions.
 
 def loadTruth(template_data_path, exclude_ria = [], targets = None):
     '''
@@ -122,29 +123,29 @@ def getInfo(par_vec, target_matches, targets_only = False):
     return targs, targ_vecs, sents
 
 
-def convertPdf(document_conversion, config, file):
-    '''
-    Convert a pdf file into a txt file 
-
-    Args:
-        document_conversion (DocumentConversionV1) : Instance of the Document Conversion service.
-        config (dict)                              : A config object that defines tags and structure 
-                                                     in the conversion output.
-        file (string)                              : path/filename to be converted.
-
-    Returns:
-        void: No return value. Txt file will be saved to the same directory
-              as code.
-    '''    
-    with open(file, 'rb') as pdf_file:
-        try:
-            response = document_conversion.convert_document(document=pdf_file, config=config)
-            document_text = response.text
-            text = open(file[:-4]+'.txt', 'w') 
-            text.write(document_text)
-            text.close()
-        except:
-            print(file, 'FAILED')
+# def convertPdf(document_conversion, config, file):
+#     '''
+#     Convert a pdf file into a txt file
+#
+#     Args:
+#         document_conversion (DocumentConversionV1) : Instance of the Document Conversion service.
+#         config (dict)                              : A config object that defines tags and structure
+#                                                      in the conversion output.
+#         file (string)                              : path/filename to be converted.
+#
+#     Returns:
+#         void: No return value. Txt file will be saved to the same directory
+#               as code.
+#     '''
+#     with open(file, 'rb') as pdf_file:
+#         try:
+#             response = document_conversion.convert_document(document=pdf_file, config=config)
+#             document_text = response.text
+#             text = open(file[:-4]+'.txt', 'w')
+#             text.write(document_text)
+#             text.close()
+#         except:
+#             print(file, 'FAILED')
             
 
 
@@ -234,89 +235,89 @@ def get_all_matches(data, par_vec, sents, targ_vecs, targs, num_out):
 #Then, given the policy documents for a country that we wish to produce the RIA for, we will compare the 
 #similarity of each sentence/paragraph with the sentences from the ground truth. 
 #Those sentences with the highest cosine similarity will be marked as matching the same target as the ground truth.
-
-def ria(documents_path, policy_documents, model, sents, targ_vecs, targs):
-    '''
-    Find the sentences/paragaraphs of policy documents that most match each target
-    
-    Args:
-        documents_path (string)      : Directory holding all documents.
-        policy_documents (list[str]) : List of policy documents for country RIA is to be conducted for.
-        model (CustomParVec)         : Embedding model to be used.
-        sents (list[str])            : list of ground truth sentences to enhance semantic searching.
-        targ_vecs (list[np.array])   : list of vector embeddings for those ground truth sentences.
-        targs (dict)                 : Dictionary of sentence to target
-
-    Returns:
-        score_dict (dict) : dictionary of target to ordered sentences found that match the target
-    '''
-    score_dict = {}
-    for policy_document in policy_documents:
-        with open(os.path.join(documents_path, policy_document),encoding="utf8") as file:
-            for line in file:
-                if len(line) > 30:
-                    top_matches = model.getMostSimilar(line, 125, 0.01, sents, targ_vecs)
-                    for match in top_matches:
-                        key = targs[match[1]]
-                        if key in score_dict:
-                            score_dict[key].add((match[0], line))
-                        else:
-                            score_dict[key] = set({(match[0], line)})
-    return score_dict
-
-def riaPDF(documents_path, policy_documents, model, sents, targ_vecs, targs):
-    '''
-    Find the sentences/paragaraphs of policy documents that most match each target.
-    
-    Args:
-        documents_path (string)      : Directory holding all documents.
-        policy_documents (list[str]) : List of policy documents for country RIA is to be conducted for.
-        model (CustomParVec)         : Embedding model to be used.
-        sents (list[str])            : list of ground truth sentences to enhance semantic searching.
-        targ_vecs (list[np.array])   : list of vector embeddings for those ground truth sentences.
-        targs (dict)                 : Dictionary of sentence to target
-
-    Returns:
-        score_dict (dict) : dictionary of target to ordered sentences found that match the target
-    '''
-    score_dict = {}
-    for policy_document in policy_documents:
-        try:
-            inputpdf = PdfFileReader(os.path.join(documents_path, policy_document), "rb")
-        except:
-            print(policy_document, 'FAILED')
-            continue
-        for i in range(inputpdf.numPages):
-            output = PdfFileWriter()
-            output.addPage(inputpdf.getPage(i))
-            newname = policy_document[:-4] + "-" + str(i+1) + '.pdf'
-            outputStream = open(newname, "wb")
-            output.write(outputStream)
-            outputStream.close()
-
-#NEEDS TO BE COMMENTED OUT WHEN COVERTPDF IS RE_WRITTEN            convertPdf(document_conversion, config, newname)
-
-            try:
-                with open(newname[:-4]+'.txt') as file:
-                    for line in file:
-                        if len(line) > 30:
-                            #print(line)
-                            top_matches = model.getMostSimilar(line, 125, 0.01, sents, targ_vecs)
-                            for match in top_matches:
-                                key = targs[match[1]]
-                                if key in score_dict:
-                                    #print('here1')
-                                    score_dict[key].add((match[0], line, policy_document, i+1))
-                                else:
-                                    score_dict[key] = set({(match[0], line, policy_document, i+1)})
-                                    #print('here1')
-            except:
-                print(newname[:-4]+'.txt failed')
-                continue
-            
-            os.remove(newname)
-            os.remove(newname[:-4]+'.txt')
-    return score_dict
+#
+# def ria(documents_path, policy_documents, model, sents, targ_vecs, targs):
+#     '''
+#     Find the sentences/paragaraphs of policy documents that most match each target
+#
+#     Args:
+#         documents_path (string)      : Directory holding all documents.
+#         policy_documents (list[str]) : List of policy documents for country RIA is to be conducted for.
+#         model (CustomParVec)         : Embedding model to be used.
+#         sents (list[str])            : list of ground truth sentences to enhance semantic searching.
+#         targ_vecs (list[np.array])   : list of vector embeddings for those ground truth sentences.
+#         targs (dict)                 : Dictionary of sentence to target
+#
+#     Returns:
+#         score_dict (dict) : dictionary of target to ordered sentences found that match the target
+#     '''
+#     score_dict = {}
+#     for policy_document in policy_documents:
+#         with open(os.path.join(documents_path, policy_document),encoding="utf8") as file:
+#             for line in file:
+#                 if len(line) > 30:
+#                     top_matches = model.getMostSimilar(line, 125, 0.01, sents, targ_vecs)
+#                     for match in top_matches:
+#                         key = targs[match[1]]
+#                         if key in score_dict:
+#                             score_dict[key].add((match[0], line))
+#                         else:
+#                             score_dict[key] = set({(match[0], line)})
+#     return score_dict
+#
+# def riaPDF(documents_path, policy_documents, model, sents, targ_vecs, targs):
+#     '''
+#     Find the sentences/paragaraphs of policy documents that most match each target.
+#
+#     Args:
+#         documents_path (string)      : Directory holding all documents.
+#         policy_documents (list[str]) : List of policy documents for country RIA is to be conducted for.
+#         model (CustomParVec)         : Embedding model to be used.
+#         sents (list[str])            : list of ground truth sentences to enhance semantic searching.
+#         targ_vecs (list[np.array])   : list of vector embeddings for those ground truth sentences.
+#         targs (dict)                 : Dictionary of sentence to target
+#
+#     Returns:
+#         score_dict (dict) : dictionary of target to ordered sentences found that match the target
+#     '''
+#     score_dict = {}
+#     for policy_document in policy_documents:
+#         try:
+#             inputpdf = PdfFileReader(os.path.join(documents_path, policy_document), "rb")
+#         except:
+#             print(policy_document, 'FAILED')
+#             continue
+#         for i in range(inputpdf.numPages):
+#             output = PdfFileWriter()
+#             output.addPage(inputpdf.getPage(i))
+#             newname = policy_document[:-4] + "-" + str(i+1) + '.pdf'
+#             outputStream = open(newname, "wb")
+#             output.write(outputStream)
+#             outputStream.close()
+#
+# #NEEDS TO BE COMMENTED OUT WHEN COVERTPDF IS RE_WRITTEN            convertPdf(document_conversion, config, newname)
+#
+#             try:
+#                 with open(newname[:-4]+'.txt') as file:
+#                     for line in file:
+#                         if len(line) > 30:
+#                             #print(line)
+#                             top_matches = model.getMostSimilar(line, 125, 0.01, sents, targ_vecs)
+#                             for match in top_matches:
+#                                 key = targs[match[1]]
+#                                 if key in score_dict:
+#                                     #print('here1')
+#                                     score_dict[key].add((match[0], line, policy_document, i+1))
+#                                 else:
+#                                     score_dict[key] = set({(match[0], line, policy_document, i+1)})
+#                                     #print('here1')
+#             except:
+#                 print(newname[:-4]+'.txt failed')
+#                 continue
+#
+#             os.remove(newname)
+#             os.remove(newname[:-4]+'.txt')
+#     return score_dict
 
 #Functions to view RIA Results
 
@@ -432,7 +433,11 @@ def avgMatches(match_by_sent, test_target_matches, num):
             except:
                 adder += (match_by_sent[key][-1] * (len(test_target_matches[key])-1))
                 counter += (len(test_target_matches[key])-1)
-        avg_new.append(adder/counter)
+        if counter != 0:
+            avg_new.append(adder/counter)
+        else:
+            avg_new.append(None)
+            # avg_new.append(0)
     return avg_new
 
 
