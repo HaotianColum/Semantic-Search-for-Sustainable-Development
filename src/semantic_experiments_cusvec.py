@@ -65,20 +65,20 @@ downsampling = 1e-3   # Downsample setting for frequent words
 
 #Data we will be testing with
 
-policy_documents_liberia   = ['Liberia Agenda for Transformation.txt', 'Liberia Eco stabilization and recovery plan-april_2015.txt']
-policy_documents_bhutan    = ['Eleventh-Five-Year-Plan_Vol-1.txt', '11th-Plan-Vol-2.txt']
-policy_documents_namibia   = ['na-nbsap-v2-en.txt', 'Agri Book with cover1.txt', 'execution strategy for industrialisation.txt', 'INDC of Namibia Final pdf.txt', 'Namibia_Financial_Sector_Strategy.txt', 'Tourism Policy.txt', 'namibia_national_health_policy_framework_2010-2020.txt', 'nampower booklet_V4.txt', '826_Ministry of Education Strategic Plan 2012-17.txt', 'Namibia_NDP4_Main_Document.txt']
-policy_documents_cambodia  = ['National Strategic Development Plan 2014-2018 EN Final.txt', 'Cambodia_EducationStrategicPlan_2014_2018.txt', 'Cambodia Climate Change Strategic Plan 2014_2023.txt', 'Cambodia Industrial Development Policy 2015_2025.txt', 'Cambodian Gender Strategic Plan - Neary Rattanak 4_Eng.txt', 'Draft_HealthStrategicPlan2016-2020.txt', 'Cambodia_national-disability-strategic-plan-2014-2018.txt', 'National_Policy_on_Green_Growth_2013_EN.txt', 'tourism_development_stategic_plan_2012_2020_english.txt', 'Labour Migration Policy for Cambodia 2015-2018.txt', 'kh-nbsap-v2-en.txt', 'financial-sector-development-strategy-2011-2020.txt', 'National_Social_Protection_Strategy_for_the_Poor_and_Vulnerable_Eng.txt']
-policy_documents_mauritius = ['Agro-forestry Strategy 2016-2020.txt', 'VISION_14June2016Vision 2030DraftVersion4.txt', 'Updated Action Plan of the Energy Strategy 2011 -2025.txt', 'National Water Policy 2014.txt', 'National CC Adaptioin Policy Framework report.txt', 'MauritiusEnergy Strategy 2009-2025.txt', 'Mauritius Govertment programme 2015-2019.txt', 'CBD Strategy and Action Plan.txt']
-
-exclude_ria_liberia   = ['liberia.xlsx']
-exclude_ria_bhutan    = ['bhutan_template2.xlsx']
-exclude_ria_namibia   = ['namibia_template2.xlsx']
-exclude_ria_cambodia  = ['cambodia_template2.xlsx']
-exclude_ria_mauritius = ['mauritius.xlsx']
-
-all_exclude_ria = [exclude_ria_liberia, exclude_ria_bhutan, exclude_ria_namibia, exclude_ria_cambodia, exclude_ria_mauritius]
-all_policy_documents = [policy_documents_liberia, policy_documents_bhutan, policy_documents_namibia, policy_documents_cambodia, policy_documents_mauritius]
+# policy_documents_liberia   = ['Liberia Agenda for Transformation.txt', 'Liberia Eco stabilization and recovery plan-april_2015.txt']
+# policy_documents_bhutan    = ['Eleventh-Five-Year-Plan_Vol-1.txt', '11th-Plan-Vol-2.txt']
+# policy_documents_namibia   = ['na-nbsap-v2-en.txt', 'Agri Book with cover1.txt', 'execution strategy for industrialisation.txt', 'INDC of Namibia Final pdf.txt', 'Namibia_Financial_Sector_Strategy.txt', 'Tourism Policy.txt', 'namibia_national_health_policy_framework_2010-2020.txt', 'nampower booklet_V4.txt', '826_Ministry of Education Strategic Plan 2012-17.txt', 'Namibia_NDP4_Main_Document.txt']
+# policy_documents_cambodia  = ['National Strategic Development Plan 2014-2018 EN Final.txt', 'Cambodia_EducationStrategicPlan_2014_2018.txt', 'Cambodia Climate Change Strategic Plan 2014_2023.txt', 'Cambodia Industrial Development Policy 2015_2025.txt', 'Cambodian Gender Strategic Plan - Neary Rattanak 4_Eng.txt', 'Draft_HealthStrategicPlan2016-2020.txt', 'Cambodia_national-disability-strategic-plan-2014-2018.txt', 'National_Policy_on_Green_Growth_2013_EN.txt', 'tourism_development_stategic_plan_2012_2020_english.txt', 'Labour Migration Policy for Cambodia 2015-2018.txt', 'kh-nbsap-v2-en.txt', 'financial-sector-development-strategy-2011-2020.txt', 'National_Social_Protection_Strategy_for_the_Poor_and_Vulnerable_Eng.txt']
+# policy_documents_mauritius = ['Agro-forestry Strategy 2016-2020.txt', 'VISION_14June2016Vision 2030DraftVersion4.txt', 'Updated Action Plan of the Energy Strategy 2011 -2025.txt', 'National Water Policy 2014.txt', 'National CC Adaptioin Policy Framework report.txt', 'MauritiusEnergy Strategy 2009-2025.txt', 'Mauritius Govertment programme 2015-2019.txt', 'CBD Strategy and Action Plan.txt']
+#
+# exclude_ria_liberia   = ['liberia.xlsx']
+# exclude_ria_bhutan    = ['bhutan_template2.xlsx']
+# exclude_ria_namibia   = ['namibia_template2.xlsx']
+# exclude_ria_cambodia  = ['cambodia_template2.xlsx']
+# exclude_ria_mauritius = ['mauritius.xlsx']
+#
+# all_exclude_ria = [exclude_ria_liberia, exclude_ria_bhutan, exclude_ria_namibia, exclude_ria_cambodia, exclude_ria_mauritius]
+# all_policy_documents = [policy_documents_liberia, policy_documents_bhutan, policy_documents_namibia, policy_documents_cambodia, policy_documents_mauritius]
 
 #Experiment 4: Same as experiment 3 except using tf-idf scaling from the target description and prior matches only
 
